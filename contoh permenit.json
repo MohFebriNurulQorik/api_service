@@ -1,0 +1,68 @@
+
+$table->string('device_name')->nullable();
+$table->string('device_id_camera')->nullable();
+$table->string('object_type')->nullable();
+$table->string('object_name')->nullable();
+$table->string('object_id')->nullable();
+$table->time('start_time')->nullable();
+$table->time('end_time')->nullable();
+$table->integer('enters')->nullable();
+$table->integer('exits')->nullable();
+$table->string('ip_address')->nullable();
+$table->string('mac_address')->nullable();
+$table->string('http_port')->nullable();
+$table->string('https_port')->nullable();
+$table->string('host_name')->nullable();
+$table->string('time_zone')->nullable();
+$table->string('dst')->nullable();
+$table->string('device_type')->nullable();
+$table->string('serial_number')->nullable();
+$table->string('hw_platform')->nullable();
+$table->longText('img')->nullable();
+$table->string('gender')->nullable();
+$table->integer('age')->nullable();
+$table->string('status')->default('unsync');
+
+{
+	"Metrics": {
+		"@DeviceId": "AMS01",
+		"@Sitename": "UIAMS",
+		"@SiteId": "UIAMS",
+		"Properties": {
+			"MacAddress": "84:89:ec:00:d1:1a",
+			"IpAddress": "172.16.54.251",
+			"HttpPort": "80",
+			"HttpsPort": "80",
+			"HostName": "Host-000018000050",
+			"TimeZone": "7",
+			"DST": "0",
+			"DeviceType": "0",
+			"SerialNumber": "202222010111",
+			"HwPlatform": "2000G2"
+		},
+		"ReportData": {
+			"@Interval": "1",
+			"Report": {
+				"@Date": "2023-12-05",
+				"Object": [
+					{
+						"@DeviceName": "UI-AEON Mall Sentul",
+						"@DeviceId": "AMS01",
+						"@ObjectType": "0",
+						"@Name": "Zone-PF1",
+						"@Id": "0",
+						"Count": [
+							{
+								"@StartTime": "18:28:00",
+								"@EndTime": "18:29:00",
+								"@Enters": "2",
+								"@Exits": "0",
+								"@Status": "0"
+							}
+						]
+					}
+				]
+			}
+		}
+	}
+}
