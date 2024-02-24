@@ -67,8 +67,7 @@ class LogApiController extends Controller
 
     public function dbPrimary($request){
 
-         $jsonData = json_decode($request->input('json'), true);
-
+            $jsonData =  json_decode($request->getContent(), true);
             $visitorCounting = new VisitorCounting();
 
             // Menyimpan data dari Metrics
@@ -231,7 +230,7 @@ class LogApiController extends Controller
     }
     public function dbSecondary($request){
 
-         $jsonData = json_decode($request->input('json'), true);
+            $jsonData =  json_decode($request->getContent(), true);
 
             $visitorCounting = new VisitorCounting();
             $visitorCounting->setConnection('secondary_mysql');
@@ -395,7 +394,7 @@ class LogApiController extends Controller
     }
     public function dbTertiary($request){
 
-         $jsonData = json_decode($request->input('json'), true);
+        $jsonData =  json_decode($request->getContent(), true);
 
             $visitorCounting = new VisitorCounting();
             $visitorCounting->setConnection('tertiary_mysql');
