@@ -19,7 +19,6 @@ class LogApiController extends Controller
 
         try {
             $headers = $request->headers->all() ?? 'no header';
-            $body = $request->all() ?? 'no body';
             $files = $request->file() ?? 'no file';
 
             if ($files != null) {
@@ -31,30 +30,47 @@ class LogApiController extends Controller
                 }
             }
 
-            $log = new LogApi();
-            $log->header = json_encode($headers);
-            $log->body = json_encode($body);
-            $log->files = json_encode($files);
-            $log->save();
+            $log1 = new LogApi();
+            $log1->setConnection('secondary_mysql');
+            $log1->header = json_encode($headers);
+            $log1->body = $request->getContent();
+            $log1->files = json_encode($files);
+            $log1->save();
+
+
+            $log2 = new LogApi();
+            $log2->header = json_encode($headers);
+            $log2->body = $request->getContent();
+            $log2->files = json_encode($files);
+            $log2->save();
+
+            $log3 = new LogApi();
+            $log3->header = json_encode($headers);
+            $log3->body = $request->getContent();
+            $log3->files = json_encode($files);
+            $log3->save();
 
         } catch (\Throwable $th) {
-
+            dd($th);
             return response()->json(['error' => 'Failed to save'], 500);
         } finally {
             try {
                 $this->dbPrimary($request);
             } catch (\Throwable $th) {
-                //throw $th;
+                $log1->files='fail';
+                $log1->save();
             }
             try {
                 $this->dbSecondary($request);
             } catch (\Throwable $th) {
-                //throw $th;
+                $log2->files='fail';
+                $log2->save();
             }
             try {
                 $this->dbTertiary($request);
             } catch (\Throwable $th) {
-                //throw $th;
+                $log3->files='fail';
+                $log3->save();
             }
 
 
@@ -68,6 +84,7 @@ class LogApiController extends Controller
     public function dbPrimary($request){
 
             $jsonData =  json_decode($request->getContent(), true);
+
             $visitorCounting = new VisitorCounting();
 
             // Menyimpan data dari Metrics
@@ -92,10 +109,8 @@ class LogApiController extends Controller
                     $visitorCounting->mall_id = $data->mall_id;
                     $visitorCounting->category_location_id = $data->category_location_id;
                     $visitorCounting->location_id = $data->location_id;
-                    $visitorCounting->location_id = $data->location_id;
-                } else {
-                    return response()->json(['message' => 'No Serial Number'], 404);
                 }
+
             } else {
                 return response()->json(['message' => 'No Serial Number'], 404);
             }
@@ -256,9 +271,6 @@ class LogApiController extends Controller
                     $visitorCounting->mall_id = $data->mall_id;
                     $visitorCounting->category_location_id = $data->category_location_id;
                     $visitorCounting->location_id = $data->location_id;
-                    $visitorCounting->location_id = $data->location_id;
-                } else {
-                    return response()->json(['message' => 'No Serial Number'], 404);
                 }
             } else {
                 return response()->json(['message' => 'No Serial Number'], 404);
@@ -394,7 +406,7 @@ class LogApiController extends Controller
     }
     public function dbTertiary($request){
 
-        $jsonData =  json_decode($request->getContent(), true);
+            $jsonData =  json_decode($request->getContent(), true);
 
             $visitorCounting = new VisitorCounting();
             $visitorCounting->setConnection('tertiary_mysql');
@@ -420,9 +432,6 @@ class LogApiController extends Controller
                     $visitorCounting->mall_id = $data->mall_id;
                     $visitorCounting->category_location_id = $data->category_location_id;
                     $visitorCounting->location_id = $data->location_id;
-                    $visitorCounting->location_id = $data->location_id;
-                } else {
-                    return response()->json(['message' => 'No Serial Number'], 404);
                 }
             } else {
                 return response()->json(['message' => 'No Serial Number'], 404);
